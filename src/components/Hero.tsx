@@ -23,7 +23,7 @@ export default function Hero() {
         style={{
           background: `
             radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(0,0,0,0.35) 100%),
-            linear-gradient(to bottom, transparent 60%, #faf8f5 100%)
+            linear-gradient(to bottom, transparent 60%, #f0ece7 100%)
           `,
         }}
       />
@@ -34,7 +34,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tight text-white"
+          className="font-display text-6xl md:text-8xl lg:text-9xl leading-[0.85] tracking-tight text-white font-light"
         >
           Interiors
           <br />
@@ -47,7 +47,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-6 text-[0.65rem] tracking-[0.2em] uppercase text-white/60"
+          className="mt-8 text-sm tracking-[0.25em] uppercase text-white/60"
         >
           Residential &mdash; Hospitality &mdash; Commercial
         </motion.p>
@@ -57,7 +57,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.1 }}
-          className="inline-flex items-center gap-2 mt-8 text-[0.7rem] tracking-[0.15em] uppercase text-white/80 border-b border-white/50 pb-1 hover:gap-3 transition-all duration-300"
+          className="inline-flex items-center gap-2 mt-10 text-sm tracking-[0.2em] uppercase text-white/80 border-b border-white/50 pb-1 hover:gap-3 transition-all duration-300"
         >
           View selected works
           <span className="text-sm">&rarr;</span>
