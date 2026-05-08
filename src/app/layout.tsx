@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
+import Preloader from "@/components/Preloader";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,7 +37,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${playfair.variable} ${cormorant.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <Preloader />
+        {children}
+      </body>
     </html>
   );
 }
