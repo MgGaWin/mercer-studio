@@ -20,12 +20,12 @@ export default function Hero() {
       </div>
 
       {/* Hero content — bottom-left aligned */}
-      <div className="relative z-10 max-w-[55%]">
+      <div className="relative z-10 max-w-[85%] sm:max-w-[70%] md:max-w-[55%]">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tight text-[#2a2a2a]"
+          className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tight text-foreground"
         >
           Interiors
           <br />
@@ -38,7 +38,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-5 text-[0.65rem] tracking-[0.2em] uppercase text-[#2a2a2a]/55"
+          className="mt-5 text-[0.65rem] tracking-[0.2em] uppercase text-foreground/55"
         >
           Residential &mdash; Hospitality &mdash; Commercial
         </motion.p>
@@ -48,7 +48,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.1 }}
-          className="inline-flex items-center gap-2 mt-8 text-[0.7rem] tracking-[0.15em] uppercase text-[#5a5a5a] border-b border-[#5a5a5a] pb-1 hover:gap-3 transition-all duration-300"
+          className="inline-flex items-center gap-2 mt-8 text-[0.7rem] tracking-[0.15em] uppercase text-foreground/60 border-b border-foreground/60 pb-1 hover:gap-3 transition-all duration-300"
         >
           View selected works
           <span className="text-sm">&rarr;</span>
@@ -56,7 +56,7 @@ export default function Hero() {
       </div>
 
       {/* Vertical text indicator (optional) */}
-      <div className="hidden lg:block absolute right-10 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] uppercase text-white/40 [writing-mode:vertical-rl]">
+      <div aria-hidden="true" className="hidden lg:block absolute right-10 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] uppercase text-white/40 [writing-mode:vertical-rl]">
         Interior Design Studio
       </div>
     </section>

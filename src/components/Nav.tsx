@@ -26,7 +26,7 @@ export default function Nav() {
       transition={{ duration: 0.8, delay: 0.2 }}
       className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-5 transition-all duration-500 ${
         scrolled
-          ? "bg-[#faf8f5]/80 backdrop-blur-md border-b border-black/[0.04]"
+          ? "bg-background/80 backdrop-blur-md border-b border-black/[0.04]"
           : "bg-transparent"
       }`}
     >

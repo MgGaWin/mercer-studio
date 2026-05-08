@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 
 const contactInfo = [
-  { label: "Email", value: "hello@atelier-studio.com" },
-  { label: "Phone", value: "+1 (212) 847-3920" },
+  { label: "Email", value: "hello@atelier-studio.com", href: "mailto:hello@atelier-studio.com" },
+  { label: "Phone", value: "+1 (212) 847-3920", href: "tel:+12128473920" },
   { label: "Studio", value: "142 Wooster Street\nNew York, NY 10012" },
 ];
 
@@ -42,9 +42,15 @@ export default function Contact() {
               <p className="text-[0.6rem] tracking-[0.2em] uppercase text-white/40 mb-2">
                 {item.label}
               </p>
-              <p className="text-sm text-white/85 whitespace-pre-line">
-                {item.value}
-              </p>
+              {item.href ? (
+                <a href={item.href} className="text-sm text-white/85 hover:text-white transition-colors duration-300">
+                  {item.value}
+                </a>
+              ) : (
+                <p className="text-sm text-white/85 whitespace-pre-line">
+                  {item.value}
+                </p>
+              )}
             </div>
           ))}
         </motion.div>
