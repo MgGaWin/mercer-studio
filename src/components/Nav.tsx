@@ -13,11 +13,33 @@ const links = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = ["projects", "services", "about", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-40% 0px -40% 0px" }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   // Lock body scroll when menu is open
@@ -54,9 +76,13 @@ export default function Nav() {
               key={link.label}
               href={link.href}
               className={`text-[0.65rem] tracking-[0.2em] uppercase transition-colors duration-300 ${
-                scrolled
-                  ? "text-text-secondary hover:text-foreground"
-                  : "text-white/70 hover:text-white"
+                activeSection === link.href.replace("#", "")
+                  ? scrolled
+                    ? "text-foreground"
+                    : "text-white"
+                  : scrolled
+                    ? "text-text-secondary hover:text-foreground"
+                    : "text-white/70 hover:text-white"
               }`}
             >
               {link.label}
