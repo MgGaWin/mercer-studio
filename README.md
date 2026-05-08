@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mercer Studio — Private Residence Design
 
-## Getting Started
+高端私人豪宅室内设计工作室网站。基于 Next.js + Tailwind CSS v4 构建。
 
-First, run the development server:
+---
+
+## 快速开始
+
+### 启动开发服务器
 
 ```bash
+cd D:\idea\python\indoor-design-web
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+浏览器打开 **http://localhost:3000** 即可预览。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 关闭开发服务器
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+在终端按 **Ctrl + C** 即可停止。
 
-## Learn More
+如果端口被占用，可以强制关闭：
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Windows
+netstat -ano | findstr :3000
+taskkill /F /PID <进程ID>
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 常用命令
 
-## Deploy on Vercel
+| 命令 | 用途 |
+|------|------|
+| `npm run dev` | 启动开发服务器（热更新，改代码自动刷新） |
+| `npm run build` | 构建生产版本（检查错误、优化资源） |
+| `npm run start` | 启动生产服务器（需要先 build） |
+| `npm run lint` | 代码检查 |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 项目结构
+
+```
+src/
+  app/
+    layout.tsx          # 根布局：字体、Preloader、元数据
+    page.tsx            # 首页：组装所有区块
+    globals.css         # 设计令牌：颜色、字体、主题
+  components/
+    Preloader.tsx       # 进场动画（ATELIER 淡入 → 幕布上滑）
+    Nav.tsx             # 吸顶导航（滚动毛玻璃）
+    Hero.tsx            # 全屏视频背景 + 居中标题
+    Projects.tsx        # 全幅沉浸式项目展示
+    Philosophy.tsx      # 品牌理念（左图右文）
+    Services.tsx        # 服务范围（交替图文布局）
+    Contact.tsx         # 联系方式（深色背景）
+    Footer.tsx          # 页脚
+    CustomCursor.tsx    # 自定义光标（细线圆环）
+    MagneticButton.tsx  # 磁性按钮组件
+    TextReveal.tsx      # 文字揭示动画组件
+
+public/
+  images/               # 项目图片、服务图片、视频
+```
+
+---
+
+## 设计系统
+
+### 颜色
+
+| 令牌 | 色值 | 用途 |
+|------|------|------|
+| `background` | `#f0ece7` | 页面背景（暖米色） |
+| `foreground` | `#2a2a2a` | 主文字（炭灰） |
+| `text-secondary` | `#888888` | 次文字 |
+| `text-muted` | `#999999` | 弱化文字 |
+| `dark` | `#2a2a2a` | Contact 区背景 |
+| `darker` | `#222222` | Footer 背景 |
+
+### 字体
+
+| 令牌 | 字体 | 用途 |
+|------|------|------|
+| `font-sans` | Geist Sans | 正文、UI |
+| `font-serif` | Playfair Display | 区块标题 |
+| `font-display` | Cormorant Garamond | Hero 标题、项目标题 |
+
+---
+
+## 添加新项目
+
+编辑 `src/components/Projects.tsx`，在 `projects` 数组中添加：
+
+```tsx
+{
+  title: "项目名称",
+  type: "Residential",  // 或 Hospitality / Commercial
+  year: "2025",
+  image: "/images/你的图片.jpg",  // 放到 public/images/
+  description: "项目描述文案。",
+}
+```
+
+---
+
+## 替换 Hero 视频
+
+将视频文件放到 `public/images/`，然后编辑 `src/components/Hero.tsx`：
+
+```tsx
+src="/images/你的视频.mp4"
+```
+
+---
+
+## 部署
+
+### Vercel（推荐）
+
+```bash
+npm i -g vercel
+vercel
+```
+
+### 其他平台
+
+```bash
+npm run build
+npm run start
+```
+
+生产服务器默认运行在 **http://localhost:3000**。
+
+---
+
+## 技术栈
+
+- **Next.js 16** — React 框架（App Router）
+- **Tailwind CSS v4** — 原子化 CSS
+- **Framer Motion** — 动画引擎
+- **Cormorant Garamond / Playfair Display / Geist** — 字体
