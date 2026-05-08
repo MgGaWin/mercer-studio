@@ -7,13 +7,13 @@ const projects = [
     title: "Hillside Residence",
     type: "Residential",
     year: "2024",
-    image: "https://picsum.photos/seed/hillside/800/600",
+    image: "/images/project1.jpg",
   },
   {
     title: "Meridian Hotel Lobby",
     type: "Hospitality",
     year: "2023",
-    image: "https://picsum.photos/seed/meridian/800/600",
+    image: "/images/project2.jpg",
   },
 ];
 

@@ -17,7 +17,7 @@ export default function Philosophy() {
           className="relative aspect-[3/4] overflow-hidden"
         >
           <img
-            src="https://picsum.photos/seed/studio/600/800"
+            src="/images/studio.jpg"
             alt="Atelier studio"
             className="absolute inset-0 w-full h-full object-cover"
           />
