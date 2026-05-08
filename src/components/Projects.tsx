@@ -8,76 +8,76 @@ const projects = [
     type: "Residential",
     year: "2024",
     image: "/images/project1.jpg",
+    description: "A private villa nestled in the hills, where natural light and material honesty define every room.",
   },
   {
     title: "Meridian Hotel Lobby",
     type: "Hospitality",
     year: "2023",
     image: "/images/project2.jpg",
+    description: "A grand lobby that balances monumental scale with intimate warmth.",
+  },
+  {
+    title: "SoHo Penthouse",
+    type: "Residential",
+    year: "2024",
+    image: "/images/project3.jpg",
+    description: "An urban sanctuary above the city, blending raw textures with refined minimalism.",
   },
 ];
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-24 md:py-32 px-6 md:px-10">
-      <div className="max-w-[1400px] mx-auto">
+    <section id="projects" className="py-20 md:py-32">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-[0.65rem] tracking-[0.25em] uppercase text-text-muted mb-12"
+          className="text-[0.65rem] tracking-[0.25em] uppercase text-text-muted mb-16"
         >
           Selected Works
         </motion.p>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, i) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{
-                duration: 0.8,
-                delay: i * 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="group relative aspect-[4/3] overflow-hidden cursor-pointer"
-            >
-              <img
-                src={project.image}
-                alt={project.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="font-serif text-xl text-white">
-                  {project.title}
-                </h3>
-                <p className="mt-1 text-[0.6rem] tracking-[0.2em] uppercase text-white/70">
-                  {project.type} &mdash; {project.year}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 text-right"
-        >
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-[0.65rem] tracking-[0.15em] uppercase text-text-secondary border-b border-text-muted pb-1 hover:text-foreground hover:border-foreground transition-colors duration-300"
+      <div className="space-y-4 md:space-y-6 px-4 md:px-8">
+        {projects.map((project, i) => (
+          <motion.div
+            key={project.title}
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{
+              duration: 1,
+              delay: 0.1,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="group relative min-h-[70vh] md:min-h-[80vh] overflow-hidden cursor-pointer"
           >
-            View all projects
-            <span>&rarr;</span>
-          </a>
-        </motion.div>
+            <img
+              src={project.image}
+              alt={project.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+
+            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14">
+              <p className="text-[0.6rem] tracking-[0.25em] uppercase text-white/50 mb-3">
+                {project.type} &mdash; {project.year}
+              </p>
+              <h3 className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-tight leading-[0.9]">
+                {project.title}
+              </h3>
+              <p className="mt-4 text-sm text-white/60 max-w-[50ch] leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                {project.description}
+              </p>
+              <div className="mt-6 inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-white/70 border-b border-white/40 pb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                View Project <span>&rarr;</span>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
