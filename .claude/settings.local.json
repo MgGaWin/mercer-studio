@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir *)",
+      "PowerShell(Test-Path \"D:\\\\idea\\\\python\\\\indoor-design-web\"; \\(Get-ChildItem -Path \"D:\\\\idea\\\\python\\\\indoor-design-web\" -Force\\).Count)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)"
+    ]
+  }
+}
