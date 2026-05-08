@@ -51,18 +51,26 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       }}
       className="group relative min-h-[70vh] md:min-h-[80vh] overflow-hidden cursor-pointer"
     >
-      {/* Parallax image */}
-      <motion.img
-        src={project.image}
-        alt={project.title}
-        style={{ y }}
-        className="absolute inset-0 w-full h-[120%] object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03] -top-[10%]"
-      />
+      {/* Parallax image with grain dissolve mask */}
+      <div
+        className="absolute inset-0"
+        style={{
+          maskImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 800 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='white'/%3E%3Cstop offset='50%25' stop-color='white'/%3E%3Cstop offset='75%25' stop-color='%23888'/%3E%3Cstop offset='100%25' stop-color='black'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' style='mix-blend-mode:multiply'/%3E%3C/svg%3E")`,
+          maskSize: "100% 100%",
+        }}
+      >
+        <motion.img
+          src={project.image}
+          alt={project.title}
+          style={{ y }}
+          className="absolute inset-0 w-full h-[120%] object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03] -top-[10%]"
+        />
+      </div>
 
       {/* Warm tint overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-900/10 via-transparent to-orange-900/5 mix-blend-multiply transition-opacity duration-700 group-hover:opacity-0" />
 
-      {/* Dark gradient overlay */}
+      {/* Dark gradient overlay (bottom) */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
       {/* Grain texture overlay */}
