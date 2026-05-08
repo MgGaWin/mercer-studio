@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="py-6 px-6 md:px-10 bg-darker">
       <div className="max-w-[1400px] mx-auto flex items-center justify-between">
         <p className="text-[0.55rem] tracking-[0.15em] uppercase text-white/30">
-          &copy; 2024 Atelier Studio
+          &copy; 2024 Mercer Studio
         </p>
         <div className="flex items-center gap-6">
           {["Instagram", "Pinterest", "LinkedIn"].map((social) => (

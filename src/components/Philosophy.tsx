@@ -18,7 +18,7 @@ export default function Philosophy() {
         >
           <img
             src="/images/studio.jpg"
-            alt="Atelier studio"
+            alt="Mercer Studio"
             className="absolute inset-0 w-full h-full object-cover"
           />
         </motion.div>

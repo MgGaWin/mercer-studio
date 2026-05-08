@@ -7,10 +7,10 @@ export default function Preloader() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const hasSeenPreloader = sessionStorage.getItem("atelier-preloader-seen");
+    const hasSeenPreloader = sessionStorage.getItem("mercer-preloader-seen");
     if (!hasSeenPreloader) {
       setIsVisible(true);
-      sessionStorage.setItem("atelier-preloader-seen", "true");
+      sessionStorage.setItem("mercer-preloader-seen", "true");
     }
   }, []);
 
@@ -37,7 +37,7 @@ export default function Preloader() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="font-display text-3xl md:text-5xl tracking-[0.3em] text-[#2a2a2a] font-light"
           >
-            ATELIER
+            MERCER
           </motion.span>
         </motion.div>
       )}

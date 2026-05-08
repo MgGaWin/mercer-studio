@@ -22,7 +22,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Atelier — Private Residence Design",
+  title: "Mercer Studio — Private Residence Design",
   description:
     "We compose spaces where light, material, and silence find their place. Bespoke interior design for private residences.",
 };

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 const contactInfo = [
-  { label: "Email", value: "hello@atelier-studio.com", href: "mailto:hello@atelier-studio.com" },
+  { label: "Email", value: "hello@mercerstudio.com", href: "mailto:hello@mercerstudio.com" },
   { label: "Phone", value: "+1 (212) 847-3920", href: "tel:+12128473920" },
   { label: "Studio", value: "142 Wooster Street\nNew York, NY 10012" },
 ];

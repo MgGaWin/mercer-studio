@@ -34,7 +34,7 @@ export default function Nav() {
         href="#"
         className="font-serif text-sm md:text-base tracking-[0.3em] text-foreground"
       >
-        ATELIER
+        MERCER
       </a>
       <div className="hidden md:flex items-center gap-8">
         {links.map((link) => (
