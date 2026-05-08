@@ -10,16 +10,24 @@ export default function Philosophy() {
     >
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-12 items-center">
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ clipPath: "inset(0% 0% 0% 100%)" }}
+          whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative aspect-[3/4] overflow-hidden"
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative aspect-[3/4] overflow-hidden group"
         >
           <img
-            src="/images/Studio%20%26%20Philosophy.png"
+            src="/images/studio---philosophy.webp"
             alt="Mercer Studio"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-amber-900/10 via-transparent to-transparent mix-blend-multiply" />
+          <div
+            className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+              backgroundSize: "128px 128px",
+            }}
           />
         </motion.div>
 

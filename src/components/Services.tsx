@@ -7,19 +7,19 @@ const services = [
     title: "Residential",
     description:
       "Your home should know you better than any portrait. We design private residences where every surface, sightline, and shadow is tuned to the life lived within — from morning routines to midnight conversations.",
-    image: "/images/Residential%20Design.png",
+    image: "/images/residential-design.webp",
   },
   {
     title: "Hospitality",
     description:
       "A hotel room is a promise. A restaurant is a theater. We craft environments where guests feel something they can't name but never forget — the alchemy of space, scent, and light.",
-    image: "/images/Hospitality%20Design.png",
+    image: "/images/hospitality-design.webp",
   },
   {
     title: "Commercial",
     description:
       "Workspaces that think. Retail spaces that seduce. We design commercial environments where function becomes invisible and experience takes the lead.",
-    image: "/images/Commercial%20Design.png",
+    image: "/images/commercial-design.webp",
   },
 ];
 
@@ -55,13 +55,29 @@ export default function Services() {
                   i % 2 === 1 ? "md:order-2" : "md:order-1"
                 }`}
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <motion.div
+                  initial={{ clipPath: "inset(0% 10% 0% 0%)" }}
+                  whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative aspect-[4/3] overflow-hidden group"
+                >
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
                   />
-                </div>
+                  {/* Warm tint */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-800/8 via-transparent to-orange-800/5 mix-blend-multiply" />
+                  {/* Grain */}
+                  <div
+                    className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+                      backgroundSize: "128px 128px",
+                    }}
+                  />
+                </motion.div>
               </div>
 
               <div
