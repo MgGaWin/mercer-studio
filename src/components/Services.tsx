@@ -7,19 +7,19 @@ const services = [
     title: "Residential",
     description:
       "Your home should know you better than any portrait. We design private residences where every surface, sightline, and shadow is tuned to the life lived within — from morning routines to midnight conversations.",
-    image: "/images/service1.jpg",
+    image: "/images/Residential%20Design.png",
   },
   {
     title: "Hospitality",
     description:
       "A hotel room is a promise. A restaurant is a theater. We craft environments where guests feel something they can't name but never forget — the alchemy of space, scent, and light.",
-    image: "/images/service2.jpg",
+    image: "/images/Hospitality%20Design.png",
   },
   {
     title: "Commercial",
     description:
       "Workspaces that think. Retail spaces that seduce. We design commercial environments where function becomes invisible and experience takes the lead.",
-    image: "/images/service3.jpg",
+    image: "/images/Commercial%20Design.png",
   },
 ];
 

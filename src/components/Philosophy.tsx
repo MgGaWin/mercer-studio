@@ -17,7 +17,7 @@ export default function Philosophy() {
           className="relative aspect-[3/4] overflow-hidden"
         >
           <img
-            src="/images/studio.jpg"
+            src="/images/Studio%20%26%20Philosophy.png"
             alt="Mercer Studio"
             className="absolute inset-0 w-full h-full object-cover"
           />
