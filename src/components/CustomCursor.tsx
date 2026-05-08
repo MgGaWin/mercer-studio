@@ -11,7 +11,7 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  const springConfig = { damping: 25, stiffness: 180 };
+  const springConfig = { damping: 35, stiffness: 600 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
@@ -78,7 +78,7 @@ export default function CustomCursor() {
             ? "rgba(42, 42, 42, 0.6)"
             : "rgba(42, 42, 42, 0.25)",
         }}
-        transition={{ type: "spring", damping: 25, stiffness: 180 }}
+        transition={{ type: "spring", damping: 35, stiffness: 600 }}
       />
     </>
   );
