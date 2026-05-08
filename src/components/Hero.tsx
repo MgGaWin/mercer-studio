@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import MagneticButton from "./MagneticButton";
 
 export default function Hero() {
   return (
@@ -52,16 +53,19 @@ export default function Hero() {
           Residential &mdash; Hospitality &mdash; Commercial
         </motion.p>
 
-        <motion.a
-          href="#projects"
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.1 }}
-          className="inline-flex items-center gap-2 mt-10 text-sm tracking-[0.2em] uppercase text-white/80 border-b border-white/50 pb-1 hover:gap-3 transition-all duration-300"
         >
-          View selected works
-          <span className="text-sm">&rarr;</span>
-        </motion.a>
+          <MagneticButton
+            href="#projects"
+            className="inline-flex items-center gap-2 mt-10 text-sm tracking-[0.2em] uppercase text-white/80 border-b border-white/50 pb-1 hover:gap-3 transition-all duration-300"
+          >
+            View selected works
+            <span className="text-sm">&rarr;</span>
+          </MagneticButton>
+        </motion.div>
       </div>
     </section>
   );
