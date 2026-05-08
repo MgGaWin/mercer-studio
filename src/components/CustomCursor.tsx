@@ -4,21 +4,19 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function CustomCursor() {
-  const [isHoveringProject, setIsHoveringProject] = useState(false);
+  const [isHoveringLink, setIsHoveringLink] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  const springConfig = { damping: 25, stiffness: 200 };
+  const springConfig = { damping: 25, stiffness: 180 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    // Detect touch device
-    const isTouch =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     setIsTouchDevice(isTouch);
     if (isTouch) return;
 
@@ -42,14 +40,17 @@ export default function CustomCursor() {
     };
   }, [isVisible, cursorX, cursorY]);
 
-  // Detect hover on project cards
+  // Detect hover on interactive elements
   useEffect(() => {
     if (isTouchDevice) return;
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const projectCard = target.closest(".group");
-      setIsHoveringProject(!!projectCard);
+      const isInteractive =
+        target.closest("a") ||
+        target.closest("button") ||
+        target.closest(".group");
+      setIsHoveringLink(!!isInteractive);
     };
 
     document.addEventListener("mouseover", handleMouseOver);
@@ -62,7 +63,7 @@ export default function CustomCursor() {
     <>
       <style>{`* { cursor: none !important; }`}</style>
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border border-[#2a2a2a]/40"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
@@ -70,31 +71,15 @@ export default function CustomCursor() {
           translateY: "-50%",
         }}
         animate={{
-          width: isHoveringProject ? 80 : 8,
-          height: isHoveringProject ? 80 : 8,
+          width: isHoveringLink ? 48 : 32,
+          height: isHoveringLink ? 48 : 32,
           opacity: isVisible ? 1 : 0,
+          borderColor: isHoveringLink
+            ? "rgba(42, 42, 42, 0.6)"
+            : "rgba(42, 42, 42, 0.25)",
         }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-      >
-        <div
-          className={`w-full h-full rounded-full flex items-center justify-center transition-colors duration-300 ${
-            isHoveringProject
-              ? "border border-white/60 bg-white/5 backdrop-blur-sm"
-              : "bg-[#2a2a2a]"
-          }`}
-        >
-          {isHoveringProject && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="text-[0.55rem] tracking-[0.15em] uppercase text-white"
-            >
-              View
-            </motion.span>
-          )}
-        </div>
-      </motion.div>
+        transition={{ type: "spring", damping: 25, stiffness: 180 }}
+      />
     </>
   );
 }
