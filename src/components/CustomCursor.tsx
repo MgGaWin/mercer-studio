@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function CustomCursor() {
   const [isHoveringLink, setIsHoveringLink] = useState(false);
+  const [isOverDark, setIsOverDark] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -40,17 +41,27 @@ export default function CustomCursor() {
     };
   }, [isVisible, cursorX, cursorY]);
 
-  // Detect hover on interactive elements
+  // Detect hover on interactive elements and dark sections
   useEffect(() => {
     if (isTouchDevice) return;
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+
+      // Interactive elements
       const isInteractive =
         target.closest("a") ||
         target.closest("button") ||
         target.closest(".group");
       setIsHoveringLink(!!isInteractive);
+
+      // Dark background sections
+      const el = target.closest("[class*='bg-dark'], [class*='bg-darker'], footer, section.bg-dark, section.bg-darker") as HTMLElement | null;
+      if (el) {
+        setIsOverDark(true);
+      } else {
+        setIsOverDark(false);
+      }
     };
 
     document.addEventListener("mouseover", handleMouseOver);
@@ -59,11 +70,24 @@ export default function CustomCursor() {
 
   if (isTouchDevice) return null;
 
+  const lightColor = "rgba(255, 255, 255, 0.5)";
+  const lightColorHover = "rgba(255, 255, 255, 0.7)";
+  const darkColor = "rgba(42, 42, 42, 0.25)";
+  const darkColorHover = "rgba(42, 42, 42, 0.6)";
+
+  const borderColor = isOverDark
+    ? isHoveringLink
+      ? lightColorHover
+      : lightColor
+    : isHoveringLink
+      ? darkColorHover
+      : darkColor;
+
   return (
     <>
       <style>{`* { cursor: none !important; }`}</style>
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border border-[#2a2a2a]/40"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
@@ -74,9 +98,7 @@ export default function CustomCursor() {
           width: isHoveringLink ? 48 : 32,
           height: isHoveringLink ? 48 : 32,
           opacity: isVisible ? 1 : 0,
-          borderColor: isHoveringLink
-            ? "rgba(42, 42, 42, 0.6)"
-            : "rgba(42, 42, 42, 0.25)",
+          borderColor,
         }}
         transition={{ type: "spring", damping: 35, stiffness: 600 }}
       />
