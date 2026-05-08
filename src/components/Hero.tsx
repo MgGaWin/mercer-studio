@@ -4,20 +4,32 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[100dvh] flex items-end pb-16 pl-6 md:pl-10 overflow-hidden">
-      {/* Background */}
+    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
+      {/* Video Background */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="/images/hero.jpg"
-          alt=""
-          aria-hidden="true"
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
           className="absolute inset-0 w-full h-full object-cover"
+          src="/images/e_d_f_e_e_c_dfd_f_mp_.mp4"
         />
-        <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      {/* Hero content — bottom-left aligned */}
-      <div className="relative z-10 max-w-[85%] sm:max-w-[70%] md:max-w-[55%]">
+      {/* Inward gradient mask — vignette + bottom fade to page bg */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(0,0,0,0.35) 100%),
+            linear-gradient(to bottom, transparent 60%, #faf8f5 100%)
+          `,
+        }}
+      />
+
+      {/* Hero content — centered */}
+      <div className="relative z-10 text-center px-6 max-w-[90%] sm:max-w-[70%] md:max-w-[55%]">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -35,7 +47,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-5 text-[0.65rem] tracking-[0.2em] uppercase text-white/60"
+          className="mt-6 text-[0.65rem] tracking-[0.2em] uppercase text-white/60"
         >
           Residential &mdash; Hospitality &mdash; Commercial
         </motion.p>
@@ -45,16 +57,11 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.1 }}
-          className="inline-flex items-center gap-2 mt-8 text-[0.7rem] tracking-[0.15em] uppercase text-white/80 border-b border-white/60 pb-1 hover:gap-3 transition-all duration-300"
+          className="inline-flex items-center gap-2 mt-8 text-[0.7rem] tracking-[0.15em] uppercase text-white/80 border-b border-white/50 pb-1 hover:gap-3 transition-all duration-300"
         >
           View selected works
           <span className="text-sm">&rarr;</span>
         </motion.a>
-      </div>
-
-      {/* Vertical text indicator (optional) */}
-      <div aria-hidden="true" className="hidden lg:block absolute right-10 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] uppercase text-white/40 [writing-mode:vertical-rl]">
-        Interior Design Studio
       </div>
     </section>
   );
