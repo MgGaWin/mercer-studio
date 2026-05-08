@@ -33,14 +33,14 @@ export default function Philosophy() {
             Our Philosophy
           </p>
           <blockquote className="font-serif text-2xl md:text-3xl leading-snug text-foreground tracking-tight">
-            We believe that great design is not about filling space, but about
-            understanding what to leave empty.
+            A room should feel like a held breath &mdash; still, intentional,
+            and alive with quiet presence.
           </blockquote>
           <p className="mt-6 text-sm leading-relaxed text-text-secondary max-w-[45ch]">
-            Founded in 2018, Atelier is a multidisciplinary design studio
-            specializing in residential, hospitality, and commercial interiors.
-            Our approach centers on material honesty, spatial rhythm, and the
-            quiet dialogue between light and form.
+            We don&apos;t decorate. We compose. Each project begins with listening
+            &mdash; to the architecture, the light, and the way our clients
+            move through their own lives. The result is never a style. It&apos;s
+            a resonance.
           </p>
         </motion.div>
       </div>

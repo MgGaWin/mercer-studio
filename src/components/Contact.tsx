@@ -22,11 +22,11 @@ export default function Contact() {
             Get in Touch
           </p>
           <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight">
-            Let&apos;s create
+            Every great space
             <br />
-            something
+            begins with a
             <br />
-            remarkable
+            conversation
           </h2>
         </motion.div>
 

@@ -22,9 +22,9 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Atelier — Interior Design Studio",
+  title: "Atelier — Private Residence Design",
   description:
-    "A multidisciplinary design studio specializing in residential, hospitality, and commercial interiors.",
+    "We compose spaces where light, material, and silence find their place. Bespoke interior design for private residences.",
 };
 
 export default function RootLayout({

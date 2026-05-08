@@ -50,7 +50,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="mt-8 text-sm tracking-[0.25em] uppercase text-white/60"
         >
-          Residential &mdash; Hospitality &mdash; Commercial
+          Where light, material, and silence find their place
         </motion.p>
 
         <motion.div
@@ -62,7 +62,7 @@ export default function Hero() {
             href="#projects"
             className="inline-flex items-center gap-2 mt-10 text-sm tracking-[0.2em] uppercase text-white/80 border-b border-white/50 pb-1 hover:gap-3 transition-all duration-300"
           >
-            View selected works
+            Explore our world
             <span className="text-sm">&rarr;</span>
           </MagneticButton>
         </motion.div>

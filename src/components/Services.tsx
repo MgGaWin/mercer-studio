@@ -6,19 +6,19 @@ const services = [
   {
     title: "Residential",
     description:
-      "Full-service interior design for private homes, apartments, and countryside retreats. We craft living spaces that reflect the unique rhythm and personality of those who inhabit them.",
+      "Your home should know you better than any portrait. We design private residences where every surface, sightline, and shadow is tuned to the life lived within — from morning routines to midnight conversations.",
     image: "/images/service1.jpg",
   },
   {
     title: "Hospitality",
     description:
-      "Bespoke environments for hotels, restaurants, and boutique spaces that tell a story. Every detail is considered — from the first impression at reception to the intimacy of private suites.",
+      "A hotel room is a promise. A restaurant is a theater. We craft environments where guests feel something they can't name but never forget — the alchemy of space, scent, and light.",
     image: "/images/service2.jpg",
   },
   {
     title: "Commercial",
     description:
-      "Workspaces and retail environments designed for both function and lasting impression. We believe great commercial design elevates every interaction within the space.",
+      "Workspaces that think. Retail spaces that seduce. We design commercial environments where function becomes invisible and experience takes the lead.",
     image: "/images/service3.jpg",
   },
 ];

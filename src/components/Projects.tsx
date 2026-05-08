@@ -8,21 +8,21 @@ const projects = [
     type: "Residential",
     year: "2024",
     image: "/images/project1.jpg",
-    description: "A private villa nestled in the hills, where natural light and material honesty define every room.",
+    description: "Morning light pours through floor-to-ceiling glass, washing over stone and linen. Every room opens to the hillside — not a view, but a conversation with the landscape.",
   },
   {
     title: "Meridian Hotel Lobby",
     type: "Hospitality",
     year: "2023",
     image: "/images/project2.jpg",
-    description: "A grand lobby that balances monumental scale with intimate warmth.",
+    description: "A space designed to slow you down. The weight of brass, the warmth of walnut, the hush of acoustic plaster — arrival as a sensory experience.",
   },
   {
     title: "SoHo Penthouse",
     type: "Residential",
     year: "2024",
     image: "/images/project3.jpg",
-    description: "An urban sanctuary above the city, blending raw textures with refined minimalism.",
+    description: "Above the city's restlessness, a quiet geometry of raw concrete, white oak, and diffused light. A home that breathes with its owner.",
   },
 ];
 
