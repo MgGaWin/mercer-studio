@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { EASE } from "@/lib/constants";
 
 declare global {
@@ -27,13 +27,29 @@ const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const [fieldsFilled, setFieldsFilled] = useState({ name: false, email: false, message: false });
   const formRef = useRef<HTMLFormElement>(null);
   const turnstileRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
+  const scriptLoadedRef = useRef(false);
 
-  // Load and render Turnstile widget
+  const checkFields = useCallback(() => {
+    if (!formRef.current) return;
+    const name = (formRef.current.elements.namedItem("name") as HTMLInputElement)?.value.trim();
+    const email = (formRef.current.elements.namedItem("email") as HTMLInputElement)?.value.trim();
+    const message = (formRef.current.elements.namedItem("message") as HTMLTextAreaElement)?.value.trim();
+    const filled = { name: !!name, email: !!email, message: !!message };
+    setFieldsFilled(filled);
+    if (filled.name && filled.email && filled.message && !showCaptcha) {
+      setShowCaptcha(true);
+    }
+  }, [showCaptcha]);
+
+  // Load Turnstile script once
   useEffect(() => {
-    if (!TURNSTILE_SITE_KEY || !turnstileRef.current) return;
+    if (!TURNSTILE_SITE_KEY || scriptLoadedRef.current) return;
+    scriptLoadedRef.current = true;
 
     const script = document.createElement("script");
     script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
@@ -41,8 +57,20 @@ export default function Contact() {
     script.defer = true;
     document.head.appendChild(script);
 
-    script.onload = () => {
-      if (!window.turnstile || !turnstileRef.current) return;
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+      scriptLoadedRef.current = false;
+    };
+  }, []);
+
+  // Render widget when showCaptcha becomes true
+  useEffect(() => {
+    if (!showCaptcha || !TURNSTILE_SITE_KEY) return;
+
+    const renderWidget = () => {
+      if (!window.turnstile || !turnstileRef.current || widgetIdRef.current) return;
       widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
         sitekey: TURNSTILE_SITE_KEY,
         callback: (token: string) => setCaptchaToken(token),
@@ -52,15 +80,30 @@ export default function Contact() {
       });
     };
 
-    return () => {
-      if (widgetIdRef.current && window.turnstile) {
-        window.turnstile.remove(widgetIdRef.current);
-      }
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, []);
+    // If script already loaded, render immediately
+    if (window.turnstile) {
+      renderWidget();
+    } else {
+      // Wait for script to load
+      const check = setInterval(() => {
+        if (window.turnstile) {
+          clearInterval(check);
+          renderWidget();
+        }
+      }, 100);
+      return () => clearInterval(check);
+    }
+  }, [showCaptcha]);
+
+  const resetCaptcha = () => {
+    if (widgetIdRef.current && window.turnstile) {
+      window.turnstile.remove(widgetIdRef.current);
+      widgetIdRef.current = null;
+    }
+    setCaptchaToken(null);
+    setShowCaptcha(false);
+    setFieldsFilled({ name: false, email: false, message: false });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -92,20 +135,7 @@ export default function Contact() {
 
       setStatus("sent");
       formRef.current?.reset();
-      setCaptchaToken(null);
-      // Re-render turnstile (remove old widget first)
-      if (window.turnstile && turnstileRef.current) {
-        if (widgetIdRef.current) {
-          window.turnstile.remove(widgetIdRef.current);
-        }
-        widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
-          sitekey: TURNSTILE_SITE_KEY!,
-          callback: (token: string) => setCaptchaToken(token),
-          "error-callback": () => setCaptchaToken(null),
-          theme: "light",
-          size: "normal",
-        });
-      }
+      resetCaptcha();
       setTimeout(() => setStatus("idle"), 4000);
     } catch {
       setStatus("error");
@@ -179,6 +209,7 @@ export default function Contact() {
               placeholder="Your name"
               required
               disabled={status === "sending"}
+              onChange={checkFields}
               className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors disabled:opacity-50"
             />
           </div>
@@ -193,6 +224,7 @@ export default function Contact() {
               placeholder="your@email.com"
               required
               disabled={status === "sending"}
+              onChange={checkFields}
               className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors disabled:opacity-50"
             />
           </div>
@@ -207,14 +239,25 @@ export default function Contact() {
               rows={4}
               required
               disabled={status === "sending"}
+              onChange={checkFields}
               className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors disabled:opacity-50"
             />
           </div>
 
-          {/* Cloudflare Turnstile captcha */}
-          {TURNSTILE_SITE_KEY && (
-            <div ref={turnstileRef} className="turnstile-container" />
-          )}
+          {/* Cloudflare Turnstile — only shows after all fields are filled */}
+          <AnimatePresence>
+            {showCaptcha && TURNSTILE_SITE_KEY && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="overflow-hidden"
+              >
+                <div ref={turnstileRef} className="turnstile-container" />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <button
             type="submit"
