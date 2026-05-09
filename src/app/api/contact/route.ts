@@ -1,7 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+
+// Simple in-memory rate limiter (per IP)
+const rateLimit = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimit.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX) return false;
+  entry.count++;
+  return true;
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = request.headers.get("x-forwarded-for") || "unknown";
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
@@ -12,6 +53,7 @@ export async function POST(request: NextRequest) {
 
     const { name, email, message } = await request.json();
 
+    // Presence check
     if (!name || !email || !message) {
       return NextResponse.json(
         { error: "All fields are required" },
@@ -19,49 +61,56 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const notificationEmail = process.env.NOTIFICATION_EMAIL || "hello@mercerstudio.com";
-
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: "Mercer Studio <onboarding@resend.dev>",
-        to: notificationEmail,
-        reply_to: email,
-        subject: `New inquiry from ${name}`,
-        html: `
-          <div style="font-family: Georgia, serif; max-width: 600px; padding: 40px; background: #f0ece7;">
-            <h2 style="color: #2a2a2a; font-weight: 400; margin-bottom: 30px;">New Project Inquiry</h2>
-            <div style="margin-bottom: 20px;">
-              <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 4px;">Name</p>
-              <p style="font-size: 14px; color: #2a2a2a;">${name}</p>
-            </div>
-            <div style="margin-bottom: 20px;">
-              <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 4px;">Email</p>
-              <p style="font-size: 14px; color: #2a2a2a;">${email}</p>
-            </div>
-            <div style="margin-bottom: 20px;">
-              <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 4px;">Message</p>
-              <p style="font-size: 14px; color: #2a2a2a; line-height: 1.6;">${message.replace(/\n/g, "<br>")}</p>
-            </div>
-            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
-            <p style="font-size: 11px; color: #999;">Sent from mercerstudio.com contact form</p>
-          </div>
-        `,
-      }),
-    });
-
-    if (!res.ok) {
-      const error = await res.text();
-      console.error("Resend API error:", error);
+    // Length validation
+    if (name.length > 200 || email.length > 320 || message.length > 5000) {
       return NextResponse.json(
-        { error: "Failed to send email" },
-        { status: 500 }
+        { error: "Input too long" },
+        { status: 400 }
       );
     }
+
+    // Email format
+    if (!isValidEmail(email)) {
+      return NextResponse.json(
+        { error: "Invalid email address" },
+        { status: 400 }
+      );
+    }
+
+    const resend = new Resend(apiKey);
+    const notificationEmail = process.env.NOTIFICATION_EMAIL || "hello@mercerstudio.com";
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+
+    // Escape user input for HTML
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
+
+    await resend.emails.send({
+      from: `Mercer Studio <${fromEmail}>`,
+      to: notificationEmail,
+      replyTo: email,
+      subject: `New inquiry from ${safeName}`,
+      html: `
+        <div style="font-family: Georgia, serif; max-width: 600px; padding: 40px; background: #f0ece7;">
+          <h2 style="color: #2a2a2a; font-weight: 400; margin-bottom: 30px;">New Project Inquiry</h2>
+          <div style="margin-bottom: 20px;">
+            <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 4px;">Name</p>
+            <p style="font-size: 14px; color: #2a2a2a;">${safeName}</p>
+          </div>
+          <div style="margin-bottom: 20px;">
+            <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 4px;">Email</p>
+            <p style="font-size: 14px; color: #2a2a2a;">${safeEmail}</p>
+          </div>
+          <div style="margin-bottom: 20px;">
+            <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 4px;">Message</p>
+            <p style="font-size: 14px; color: #2a2a2a; line-height: 1.6;">${safeMessage}</p>
+          </div>
+          <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+          <p style="font-size: 11px; color: #999;">Sent from mercerstudio.com contact form</p>
+        </div>
+      `,
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

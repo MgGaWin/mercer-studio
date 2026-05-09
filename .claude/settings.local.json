@@ -39,7 +39,9 @@
       "Bash(taskkill /F /IM node.exe)",
       "Bash(Start-Sleep -Seconds 2)",
       "PowerShell(taskkill *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)"
     ]
   }
 }
