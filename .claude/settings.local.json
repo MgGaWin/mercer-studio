@@ -1,9 +1,36 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir *)",
-      "PowerShell(Test-Path \"D:\\\\idea\\\\python\\\\indoor-design-web\"; \\(Get-ChildItem -Path \"D:\\\\idea\\\\python\\\\indoor-design-web\" -Force\\).Count)",
-      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)"
+      "Bash(Get-ChildItem -Path \"D:\\\\idea\\\\python\\\\indoor-design-web\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(bash *)",
+      "Bash(npm install *)",
+      "Bash(npm ls *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npx next *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(Get-ChildItem -Path \"D:\\\\idea\\\\python\\\\indoor-design-web\\\\src\" -Recurse -Filter \"*.tsx\")",
+      "Bash(Select-Object FullName)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__052c-i1._.css\")",
+      "Bash(netstat -ano)",
+      "WebSearch",
+      "Bash(curl -sL -o hero.jpg \"https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop\")",
+      "Bash(curl -sL -o project1.jpg \"https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop\")",
+      "Bash(curl -sL -o project2.jpg \"https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop\")",
+      "Bash(curl -sL -o studio.jpg \"https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop\")",
+      "Bash(curl *)",
+      "Bash(awk '{print $9, $5}')",
+      "Bash(git reset *)",
+      "Bash(grep -E \"\\\\.jpg$\")",
+      "Bash(node -e ' *)",
+      "Bash(git revert *)",
+      "Bash(grep -E \"\\\\.png$\")",
+      "Bash(gh auth *)"
     ]
   }
 }
