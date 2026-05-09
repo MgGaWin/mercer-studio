@@ -8,6 +8,14 @@ const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+
+  // Opportunistic cleanup of expired entries
+  if (rateLimit.size > 10000) {
+    for (const [key, val] of rateLimit) {
+      if (now > val.resetAt) rateLimit.delete(key);
+    }
+  }
+
   const entry = rateLimit.get(ip);
 
   if (!entry || now > entry.resetAt) {
@@ -25,7 +33,8 @@ function escapeHtml(s: string): string {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function isValidEmail(email: string): boolean {
@@ -35,7 +44,7 @@ function isValidEmail(email: string): boolean {
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
-    const ip = request.headers.get("x-forwarded-for") || "unknown";
+    const ip = request.headers.get("x-real-ip") || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
         { error: "Too many requests. Please try again later." },
@@ -122,7 +131,7 @@ export async function POST(request: NextRequest) {
       from: `Mercer Studio <${fromEmail}>`,
       to: notificationEmail,
       replyTo: email,
-      subject: `New inquiry from ${safeName}`,
+      subject: `New inquiry from ${name}`,
       html: `
         <div style="font-family: Georgia, serif; max-width: 600px; padding: 40px; background: #f0ece7;">
           <h2 style="color: #2a2a2a; font-weight: 400; margin-bottom: 30px;">New Project Inquiry</h2>

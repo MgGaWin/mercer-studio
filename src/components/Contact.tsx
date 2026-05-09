@@ -56,7 +56,9 @@ export default function Contact() {
       if (widgetIdRef.current && window.turnstile) {
         window.turnstile.remove(widgetIdRef.current);
       }
-      document.head.removeChild(script);
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
     };
   }, []);
 
@@ -91,8 +93,11 @@ export default function Contact() {
       setStatus("sent");
       formRef.current?.reset();
       setCaptchaToken(null);
-      // Re-render turnstile
+      // Re-render turnstile (remove old widget first)
       if (window.turnstile && turnstileRef.current) {
+        if (widgetIdRef.current) {
+          window.turnstile.remove(widgetIdRef.current);
+        }
         widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
           sitekey: TURNSTILE_SITE_KEY!,
           callback: (token: string) => setCaptchaToken(token),
