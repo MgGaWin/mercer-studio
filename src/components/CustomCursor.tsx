@@ -1,13 +1,15 @@
 "use client";
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
   const [isHoveringLink, setIsHoveringLink] = useState(false);
   const [isOverDark, setIsOverDark] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  const isVisibleRef = useRef(false);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -16,6 +18,20 @@ export default function CustomCursor() {
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
+  // Keep ref in sync with state
+  useEffect(() => {
+    isVisibleRef.current = isVisible;
+  }, [isVisible]);
+
+  // Add/remove cursor:none class on <html>
+  useEffect(() => {
+    if (!isTouchDevice) {
+      document.documentElement.classList.add("custom-cursor-active");
+      return () => document.documentElement.classList.remove("custom-cursor-active");
+    }
+  }, [isTouchDevice]);
+
+  // Detect touch device & set up mouse listeners
   useEffect(() => {
     const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     setIsTouchDevice(isTouch);
@@ -24,7 +40,7 @@ export default function CustomCursor() {
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      if (!isVisibleRef.current) setIsVisible(true);
     };
 
     const handleMouseEnter = () => setIsVisible(true);
@@ -39,7 +55,7 @@ export default function CustomCursor() {
       document.removeEventListener("mouseenter", handleMouseEnter);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [isVisible, cursorX, cursorY]);
+  }, [cursorX, cursorY]);
 
   // Detect hover on interactive elements and dark sections
   useEffect(() => {
@@ -56,12 +72,8 @@ export default function CustomCursor() {
       setIsHoveringLink(!!isInteractive);
 
       // Dark background sections
-      const el = target.closest("[class*='bg-dark'], [class*='bg-darker'], footer, section.bg-dark, section.bg-darker") as HTMLElement | null;
-      if (el) {
-        setIsOverDark(true);
-      } else {
-        setIsOverDark(false);
-      }
+      const el = target.closest("[data-theme='dark'], footer") as HTMLElement | null;
+      setIsOverDark(!!el);
     };
 
     document.addEventListener("mouseover", handleMouseOver);
@@ -84,24 +96,21 @@ export default function CustomCursor() {
       : darkColor;
 
   return (
-    <>
-      <style>{`* { cursor: none !important; }`}</style>
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border"
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-        animate={{
-          width: isHoveringLink ? 48 : 32,
-          height: isHoveringLink ? 48 : 32,
-          opacity: isVisible ? 1 : 0,
-          borderColor,
-        }}
-        transition={{ type: "spring", damping: 35, stiffness: 600 }}
-      />
-    </>
+    <motion.div
+      className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border"
+      style={{
+        x: cursorXSpring,
+        y: cursorYSpring,
+        translateX: "-50%",
+        translateY: "-50%",
+      }}
+      animate={{
+        width: isHoveringLink ? 48 : 32,
+        height: isHoveringLink ? 48 : 32,
+        opacity: isVisible ? 1 : 0,
+        borderColor,
+      }}
+      transition={{ type: "spring", damping: 35, stiffness: 600 }}
+    />
   );
 }

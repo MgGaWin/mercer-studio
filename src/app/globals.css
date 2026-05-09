@@ -23,6 +23,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Custom cursor - hide default */
+.custom-cursor-active * {
+  cursor: none !important;
+}
+
 /* Selection color */
 ::selection {
   background: rgba(42, 42, 42, 0.12);
@@ -33,7 +38,7 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 9998;
+  z-index: 50;
   pointer-events: none;
   opacity: 0.025;
   mix-blend-mode: overlay;
