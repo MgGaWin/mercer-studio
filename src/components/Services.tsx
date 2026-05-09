@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE, NOISE_TEXTURE_SVG, NOISE_BG_SIZE } from "@/lib/constants";
 
 const services = [
   {
@@ -47,7 +48,7 @@ export default function Services() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, ease: EASE }}
               className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center"
             >
               <div
@@ -59,12 +60,14 @@ export default function Services() {
                   initial={{ clipPath: "inset(0% 10% 0% 0%)" }}
                   whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
                   viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 1, delay: 0.2, ease: EASE }}
                   className="relative aspect-[4/3] overflow-hidden group"
                 >
                   <img
                     src={service.image}
                     alt={service.title}
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
                   />
                   {/* Warm tint */}
@@ -73,8 +76,8 @@ export default function Services() {
                   <div
                     className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
                     style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
-                      backgroundSize: "128px 128px",
+                      backgroundImage: NOISE_TEXTURE_SVG,
+                      backgroundSize: NOISE_BG_SIZE,
                     }}
                   />
                 </motion.div>

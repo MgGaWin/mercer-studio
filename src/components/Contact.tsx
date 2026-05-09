@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { EASE } from "@/lib/constants";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -19,7 +20,7 @@ export default function Contact() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: EASE }}
         >
           <p className="text-[0.65rem] tracking-[0.2em] uppercase text-white/40 mb-8">
             Get in Touch
@@ -56,7 +57,7 @@ export default function Contact() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
           className="space-y-8 pt-2"
         >
           <div>

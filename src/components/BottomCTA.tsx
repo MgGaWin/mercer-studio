@@ -2,15 +2,16 @@
 
 import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton";
+import { EASE } from "@/lib/constants";
 
 export default function BottomCTA() {
   return (
-    <section className="py-32 md:py-44 px-6 md:px-10 bg-[#f0ece7]">
+    <section className="py-32 md:py-44 px-6 md:px-10 bg-background">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1, ease: EASE }}
         className="max-w-[900px] mx-auto text-center"
       >
         <p className="text-[0.6rem] tracking-[0.3em] uppercase text-text-muted mb-8">

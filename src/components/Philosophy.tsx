@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE, NOISE_TEXTURE_SVG, NOISE_BG_SIZE } from "@/lib/constants";
 
 export default function Philosophy() {
   return (
@@ -13,20 +14,22 @@ export default function Philosophy() {
           initial={{ clipPath: "inset(0% 0% 0% 100%)" }}
           whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1.2, ease: EASE }}
           className="relative aspect-[3/4] overflow-hidden group"
         >
           <img
             src="/images/studio---philosophy.webp"
             alt="Mercer Studio"
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-amber-900/10 via-transparent to-transparent mix-blend-multiply" />
           <div
             className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
-              backgroundSize: "128px 128px",
+              backgroundImage: NOISE_TEXTURE_SVG,
+              backgroundSize: NOISE_BG_SIZE,
             }}
           />
         </motion.div>
@@ -35,7 +38,7 @@ export default function Philosophy() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
         >
           <p className="text-[0.65rem] tracking-[0.25em] uppercase text-text-muted mb-8">
             Our Philosophy

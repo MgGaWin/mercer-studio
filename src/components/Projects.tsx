@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { EASE, NOISE_TEXTURE_SVG, NOISE_BG_SIZE } from "@/lib/constants";
 
 const projects = [
   {
@@ -47,7 +48,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       transition={{
         duration: 1.2,
         delay: 0.1,
-        ease: [0.16, 1, 0.3, 1],
+        ease: EASE,
       }}
       className="group relative min-h-[70vh] md:min-h-[80vh] overflow-hidden cursor-pointer"
     >
@@ -55,6 +56,8 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       <motion.img
         src={project.image}
         alt={project.title}
+        loading="lazy"
+        decoding="async"
         style={{ y }}
         className="absolute inset-0 w-full h-[120%] object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03] -top-[10%]"
       />
@@ -69,8 +72,8 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-overlay"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
-          backgroundSize: "128px 128px",
+          backgroundImage: NOISE_TEXTURE_SVG,
+          backgroundSize: NOISE_BG_SIZE,
         }}
       />
 

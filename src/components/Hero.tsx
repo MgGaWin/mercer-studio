@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton";
+import { EASE } from "@/lib/constants";
 
 export default function Hero() {
   return (
@@ -13,6 +14,8 @@ export default function Hero() {
           muted
           loop
           playsInline
+          poster="/images/hero.webp"
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover"
           src="/images/Luxury-design.mp4"
         />
@@ -34,7 +37,7 @@ export default function Hero() {
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+          transition={{ duration: 1.2, ease: EASE, delay: 0.3 }}
           className="font-display text-6xl md:text-8xl lg:text-9xl leading-[0.85] tracking-tight text-white font-light"
         >
           Interiors

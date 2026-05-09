@@ -38,6 +38,17 @@ export default function RootLayout({
       className={`${geistSans.variable} ${playfair.variable} ${cormorant.variable} antialiased`}
     >
       <body>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-foreground focus:text-background focus:text-sm"
+        >
+          Skip to content
+        </a>
+        <noscript>
+          <div style={{ padding: "2rem", textAlign: "center", fontFamily: "serif", fontSize: "1.2rem" }}>
+            Please enable JavaScript to view this site.
+          </div>
+        </noscript>
         <Preloader />
         {children}
       </body>
