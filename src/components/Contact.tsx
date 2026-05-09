@@ -13,7 +13,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 px-6 md:px-10 bg-dark text-white">
+    <section id="contact" data-theme="dark" className="py-24 md:py-32 px-6 md:px-10 bg-dark text-white">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -60,10 +60,12 @@ export default function Contact() {
           className="space-y-8 pt-2"
         >
           <div>
-            <label className="block text-[0.6rem] tracking-[0.2em] uppercase text-white/40 mb-3">
+            <label htmlFor="contact-name" className="block text-[0.6rem] tracking-[0.2em] uppercase text-white/40 mb-3">
               Name
             </label>
             <input
+              id="contact-name"
+              name="name"
               type="text"
               placeholder="Your name"
               required
@@ -71,10 +73,12 @@ export default function Contact() {
             />
           </div>
           <div>
-            <label className="block text-[0.6rem] tracking-[0.2em] uppercase text-white/40 mb-3">
+            <label htmlFor="contact-email" className="block text-[0.6rem] tracking-[0.2em] uppercase text-white/40 mb-3">
               Email
             </label>
             <input
+              id="contact-email"
+              name="email"
               type="email"
               placeholder="your@email.com"
               required
@@ -82,14 +86,16 @@ export default function Contact() {
             />
           </div>
           <div>
-            <label className="block text-[0.6rem] tracking-[0.2em] uppercase text-white/40 mb-3">
+            <label htmlFor="contact-message" className="block text-[0.6rem] tracking-[0.2em] uppercase text-white/40 mb-3">
               Message
             </label>
             <textarea
+              id="contact-message"
+              name="message"
               placeholder="Tell us about your project..."
               rows={4}
               required
-              className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors resize-none"
+              className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors"
             />
           </div>
           <button
