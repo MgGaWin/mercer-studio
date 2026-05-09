@@ -14,7 +14,7 @@ export default function Hero() {
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          src="/images/e_d_f_e_e_c_dfd_f_mp_.mp4"
+          src="/images/Luxury-design.mp4"
         />
       </div>
 
