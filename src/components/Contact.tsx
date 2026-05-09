@@ -1,15 +1,74 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { EASE } from "@/lib/constants";
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        container: string | HTMLElement,
+        options: {
+          sitekey: string;
+          callback: (token: string) => void;
+          "error-callback"?: () => void;
+          theme?: string;
+          size?: string;
+        }
+      ) => string;
+      remove: (widgetId: string) => void;
+    };
+  }
+}
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+
+  // Load and render Turnstile widget
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY || !turnstileRef.current) return;
+
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      if (!window.turnstile || !turnstileRef.current) return;
+      widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (token: string) => setCaptchaToken(token),
+        "error-callback": () => setCaptchaToken(null),
+        theme: "light",
+        size: "normal",
+      });
+    };
+
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.remove(widgetIdRef.current);
+      }
+      document.head.removeChild(script);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (TURNSTILE_SITE_KEY && !captchaToken) {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 3000);
+      return;
+    }
+
     setStatus("sending");
 
     const form = e.currentTarget;
@@ -17,6 +76,7 @@ export default function Contact() {
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+      token: captchaToken,
     };
 
     try {
@@ -30,6 +90,17 @@ export default function Contact() {
 
       setStatus("sent");
       formRef.current?.reset();
+      setCaptchaToken(null);
+      // Re-render turnstile
+      if (window.turnstile && turnstileRef.current) {
+        widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+          sitekey: TURNSTILE_SITE_KEY!,
+          callback: (token: string) => setCaptchaToken(token),
+          "error-callback": () => setCaptchaToken(null),
+          theme: "light",
+          size: "normal",
+        });
+      }
       setTimeout(() => setStatus("idle"), 4000);
     } catch {
       setStatus("error");
@@ -134,6 +205,12 @@ export default function Contact() {
               className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors disabled:opacity-50"
             />
           </div>
+
+          {/* Cloudflare Turnstile captcha */}
+          {TURNSTILE_SITE_KEY && (
+            <div ref={turnstileRef} className="turnstile-container" />
+          )}
+
           <button
             type="submit"
             disabled={status === "sending"}

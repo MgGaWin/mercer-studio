@@ -51,7 +51,39 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { name, email, message } = await request.json();
+    const { name, email, message, token } = await request.json();
+
+    // Verify Turnstile captcha (if configured)
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    if (turnstileSecret) {
+      if (!token) {
+        return NextResponse.json(
+          { error: "Captcha verification required" },
+          { status: 400 }
+        );
+      }
+
+      const captchaRes = await fetch(
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            secret: turnstileSecret,
+            response: token,
+            remoteip: ip,
+          }),
+        }
+      );
+
+      const captchaData = await captchaRes.json();
+      if (!captchaData.success) {
+        return NextResponse.json(
+          { error: "Captcha verification failed" },
+          { status: 400 }
+        );
+      }
+    }
 
     // Presence check
     if (!name || !email || !message) {
