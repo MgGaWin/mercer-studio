@@ -30,7 +30,16 @@
       "Bash(node -e ' *)",
       "Bash(git revert *)",
       "Bash(grep -E \"\\\\.png$\")",
-      "Bash(gh auth *)"
+      "Bash(gh auth *)",
+      "Bash(gh repo *)",
+      "Bash(npx vercel *)",
+      "Bash(gh pr *)",
+      "Bash(taskkill /F /IM \"node.exe\" /FI \"WINDOWTITLE eq next*\")",
+      "Bash(Remove-Item -Recurse -Force \"D:\\\\idea\\\\python\\\\indoor-design-web\\\\.next\" -ErrorAction SilentlyContinue)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(Start-Sleep -Seconds 2)",
+      "PowerShell(taskkill *)",
+      "Bash(git push *)"
     ]
   }
 }

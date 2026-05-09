@@ -1,16 +1,47 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { EASE } from "@/lib/constants";
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    setStatus("sending");
+
+    const form = e.currentTarget;
+    const data = {
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Failed to send");
+
+      setStatus("sent");
+      formRef.current?.reset();
+      setTimeout(() => setStatus("idle"), 4000);
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 4000);
+    }
+  };
+
+  const buttonText = {
+    idle: "Send Message",
+    sending: "Sending...",
+    sent: "Message Sent",
+    error: "Failed — Try Again",
   };
 
   return (
@@ -53,6 +84,7 @@ export default function Contact() {
         </motion.div>
 
         <motion.form
+          ref={formRef}
           onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -70,7 +102,8 @@ export default function Contact() {
               type="text"
               placeholder="Your name"
               required
-              className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors"
+              disabled={status === "sending"}
+              className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors disabled:opacity-50"
             />
           </div>
           <div>
@@ -83,7 +116,8 @@ export default function Contact() {
               type="email"
               placeholder="your@email.com"
               required
-              className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors"
+              disabled={status === "sending"}
+              className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors disabled:opacity-50"
             />
           </div>
           <div>
@@ -96,14 +130,16 @@ export default function Contact() {
               placeholder="Tell us about your project..."
               rows={4}
               required
-              className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors"
+              disabled={status === "sending"}
+              className="w-full bg-transparent border-b border-white/20 pb-3 text-sm text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none transition-colors disabled:opacity-50"
             />
           </div>
           <button
             type="submit"
-            className="mt-4 px-8 py-3 border border-white/30 text-[0.7rem] tracking-[0.2em] uppercase text-white/80 hover:bg-white hover:text-[#2a2a2a] transition-all duration-300"
+            disabled={status === "sending"}
+            className="mt-4 px-8 py-3 border border-white/30 text-[0.7rem] tracking-[0.2em] uppercase text-white/80 hover:bg-white hover:text-[#2a2a2a] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {submitted ? "Message Sent" : "Send Message"}
+            {buttonText[status]}
           </button>
         </motion.form>
       </div>
